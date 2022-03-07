@@ -19,7 +19,7 @@
 #include <sys/mman.h>
 #include <sys/queue.h>
 
-#if defined(HAVE_DISPATCH_DISPATCH_H) && HAVE_DISPATCH_DISPATCH_H // ld64-port
+#if defined(DISPATCH_APPLY_AUTO) // ld64-port
 #define LIBCD_PARALLEL 1
 #endif
 
@@ -68,7 +68,7 @@
 #endif
 
 #define bl htonl
-#ifndef __APPLE__ // ld64-port
+#if !defined(htonll) && !defined(ntohll) // ld64-port
 #if __BYTE_ORDER == __LITTLE_ENDIAN
 #define htonll __builtin_bswap64
 #else
