@@ -2,3 +2,4 @@
 *.lo
 usage_examples/ios_toolchain/tmp
 usage_examples/ios_toolchain/target
+.DS_Store
