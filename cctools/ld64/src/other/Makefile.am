@@ -46,7 +46,6 @@ ObjectDump_SOURCES = \
 ObjectDump_LDADD =  \
 	$(top_builddir)/ld64/src/ld/parsers/libParsers.la \
 	$(top_builddir)/ld64/src/3rd/BlocksRuntime/libBlocksRuntime.la  \
-	$(LTO_RPATH) \
 	$(LTO_LIB) \
 	$(DL_LIB) 
 

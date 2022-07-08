@@ -26,7 +26,7 @@ LDADD =  \
         $(top_builddir)/libmacho/libmacho.la \
 	$(top_builddir)/libstuff/libstuff.la \
 	$(DL_LIB) \
-	$(LTO_RPATH) \
+	$(LTO_LIB) \
 	$(MATH_LIB) \
 	$(REALLOCF_LIB)
 
