@@ -24,12 +24,6 @@ fi
 
 CXXFLAGS="$CXXFLAGS -std=c++1z"
 
-if test "x$build" = "x$host"; then
-  CFLAGS="$CFLAGS -isystem /usr/local/include -isystem /usr/pkg/include"
-  CXXFLAGS="$CXXFLAGS -isystem /usr/local/include -isystem /usr/pkg/include"
-  LDFLAGS="$LDFLAGS -L/usr/local/lib -L/usr/pkg/lib"
-fi
-
 CWARNINGS=""
 OBJCWARNINGS=""
 CXXWARNINGS=""
@@ -81,14 +75,6 @@ case "$CCVERSION" in
 esac
 
 EXTRAFLAGS="$EXTRAFLAGS -DLD64_VERSION_NUM=609"
-
-case "$CXXVERSION" in
-  *clang* )
-    if test "x$isdarwin" = "xyes"; then
-      CXXFLAGS="$CXXFLAGS -stdlib=libc++"
-    fi
-  ;;
-esac
 
 EXTRAFLAGS="$EXTRAFLAGS -fblocks"
 
