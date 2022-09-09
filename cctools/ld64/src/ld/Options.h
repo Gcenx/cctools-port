@@ -805,6 +805,8 @@ private:
 	bool								fPageAlignDataAtoms;
 	bool								fNeedsThreadLoadCommand;
 	bool								fEntryPointLoadCommand;
+    bool                                fEntryPointLoadCommandForceOn;
+    bool                                fEntryPointLoadCommandForceOff;
 	bool								fSourceVersionLoadCommand;
 	bool								fSourceVersionLoadCommandForceOn;
 	bool								fSourceVersionLoadCommandForceOff;	

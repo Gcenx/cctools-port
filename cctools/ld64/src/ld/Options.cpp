@@ -233,6 +233,7 @@ Options::Options(int argc, const char* argv[])
 	  fDataInCodeInfoLoadCommand(false), fDataInCodeInfoLoadCommandForcedOn(false), fDataInCodeInfoLoadCommandForcedOff(false),
 	  fCanReExportSymbols(false), fObjcCategoryMerging(true), fPageAlignDataAtoms(false), 
 	  fNeedsThreadLoadCommand(false), fEntryPointLoadCommand(false),
+      fEntryPointLoadCommandForceOn(false), fEntryPointLoadCommandForceOff(false),
 	  fSourceVersionLoadCommand(false),
 	  fSourceVersionLoadCommandForceOn(false), fSourceVersionLoadCommandForceOff(false), 
 	  fExportDynamic(false), fAbsoluteSymbols(false),
@@ -4131,8 +4132,13 @@ void Options::parse(int argc, const char* argv[])
 			else if (strcmp(arg, "-debug_variant") == 0) {
 			    fDebugVariant = true;
             }
+            else if (strcmp(arg, "-new_main") == 0 ) {
+                fEntryPointLoadCommandForceOn = true;
+                cannotBeUsedWithBitcode(arg);
+            }
 			else if (strcmp(arg, "-no_new_main") == 0) {
-				// HACK until 39514191 is fixed
+                fEntryPointLoadCommandForceOff = true;
+                cannotBeUsedWithBitcode(arg);
 			}
 			else if (strcmp(arg, "-init_offsets") == 0) {
 				fMakeInitializersIntoOffsets = true;
@@ -5493,8 +5499,18 @@ void Options::reconfigureDefaults()
 		case Options::kDynamicExecutable:
 			if ( platforms().contains(ld::Platform::driverKit) )
 				break;
-			// <rdar://problem/16310363> Look for "_main" not "start" when building for all recent OS versions and architectures
-			if ( platforms().minOS(ld::version2012) || (fArchitecture == CPU_TYPE_ARM64)
+            // Revert "-new_main" and "-no_new_main" option
+            if ( fEntryPointLoadCommandForceOn ) {
+                fEntryPointLoadCommand = true;
+                if ( fEntryName == NULL )
+                    fEntryName = "_main";
+            }
+            else if ( fEntryPointLoadCommandForceOff ) {
+                fNeedsThreadLoadCommand = true;
+            if ( fEntryName == NULL )
+                fEntryName = "start";
+            }
+            else if ( platforms().minOS(ld::version2012) || (fArchitecture == CPU_TYPE_ARM64)
 		#if SUPPORT_ARCH_arm64_32
 													|| (fArchitecture == CPU_TYPE_ARM64_32)
 		#endif
